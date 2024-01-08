@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:leoblue/pages/profile.dart';
-
 import '../backend_pages/home_controller.dart';
 import '../constant/colors.dart';
 import '../utils/section_tile.dart';
-
 import 'package:location/location.dart';
 import '../backend_pages/home_view.dart';
 
@@ -25,17 +23,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Récupérer l'utilisateur actuellement connecté lors de l'initialisation du widget
     currentUser = FirebaseAuth.instance.currentUser;
-
-    // Charger les informations supplémentaires depuis la base de données
     loadUserData();
   }
 
   Future<void> loadUserData() async {
     try {
       if (currentUser != null) {
-        // Récupérer les informations supplémentaires de la base de données
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
             .collection('users')
             .doc(currentUser!.uid)
@@ -50,6 +44,60 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Widget _buildSection(String sectionName, String imagePath) {
+    return Section(
+      onChanged: (p0) {},
+      sectionName: sectionName,
+      iconSection: Image.asset(
+        imagePath,
+        width: 45,
+        height: 45,
+      ),
+      followed: subscription.contains(sectionName),
+    );
+  }
+
+  Widget _buildCoordinatesContainer() {
+    return Container(
+      padding: const EdgeInsets.all(15.0),
+      child: Container(
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          color: tdBlack,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: Colors.blue, width: 4),
+        ),
+        child: Column(
+          children: [
+            const Text(
+              'Coordonnées ',
+              style: TextStyle(color: tdWhite, fontSize: 20),
+            ),
+            Column(
+              children: [
+                Text(
+                  'Latitude: $latitude',
+                  style: const TextStyle(color: tdWhite, fontSize: 15),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Longitude: $longitude',
+                  style: const TextStyle(color: tdWhite, fontSize: 15),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    getUserLocation();
+                  },
+                  child: const Text('Get Location'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,103 +136,21 @@ class _HomePageState extends State<HomePage> {
 
         ]),
       ),
+
       body: ListView(
         children: [
-          Section(
-            onChanged: (p0) {},
-            sectionName: "Annonce",
-            iconSection: Image.asset(
-              'images/annonce.png',
-              width: 45,
-              height: 45,
-            ),
-            followed: subscription.contains("Annonce"),
-          ),
-          Section(
-            onChanged: (p0) {},
-            sectionName: "Kidnapping",
-            iconSection: Image.asset(
-              'images/alerte.png',
-              width: 45,
-              height: 45,
-            ),
-            followed: subscription.contains("Kidnapping"),
-          ),
-          Section(
-            onChanged: (p0) {},
-            sectionName: "Fireplace",
-            iconSection: Image.asset(
-              'images/feu.png',
-              width: 45,
-              height: 45,
-            ),
-            followed: subscription.contains("Fireplace"),
-          ),
-          Section(
-            onChanged: (p0) {},
-            sectionName: "Tsunami",
-            iconSection: Image.asset(
-              'images/tsunami.png',
-              width: 45,
-              height: 45,
-            ),
-            followed: subscription.contains("Tsunami"),
-          ),
-          Section(
-            onChanged: (p0) {},
-            sectionName: "Eirballoon",
-            iconSection: Image.asset(
-              'images/montgolfiere.png',
-              width: 45,
-              height: 45,
-            ),
-            followed: subscription.contains("Eirballoon"),
-          ),
+          _buildSection('Annonce', 'images/annonce.png'),
+          _buildSection('Kidnapping', 'images/alerte.png'),
+          _buildSection('Fireplace', 'images/feu.png'),
+          _buildSection('Tsunami', 'images/tsunami.png'),
+          _buildSection('Eirballoon', 'images/montgolfiere.png'),
           ElevatedButton(
             onPressed: () {
-              _toggleVisitSatellit();
+              _toggleVisitSatellite();
             },
             child: const Text('Show satellite informations'),
           ),
-          Container(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              padding: const EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                color: tdBlack,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.blue, width: 4),
-              ),
-              child: Column(
-                children: [
-                  const Text(
-                    'Coordonnées ',
-                    style: TextStyle(color: tdWhite, fontSize: 20),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Latitude: $latitude',
-                        style: const TextStyle(color: tdWhite, fontSize: 15),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Longitude: $longitude',
-                        style: const TextStyle(color: tdWhite, fontSize: 15),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          getUserLocation();
-                        },
-                        child:const Text('Get Location'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _buildCoordinatesContainer(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -213,14 +179,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _toggleVisitSatellit() {
+  void _toggleVisitSatellite() {
     setState(() {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const HomePage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
     });
   }
 
-  void getUserLocation() async {
+   void getUserLocation() async {
     // Check if location services are enabled
     Location location = Location();
     bool serviceEnabled;
