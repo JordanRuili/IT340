@@ -2,4 +2,9 @@ function retrieveBalance(){
     console.log("Retrieve balance");
 }
 
-module.exports = {retrieveBalance};
+function debitAccount(accountId,amount){
+    console.log("accountId:", accountId);
+    console.log("amount:", amount);
+}
+
+module.exports = {retrieveBalance,debitAccount};
