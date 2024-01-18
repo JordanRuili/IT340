@@ -9,7 +9,7 @@ function retrievePatientList(){
     return database.patients.map(({creationDate, ...patient}) => ({patient}));
 }
 
-function getPatient(id){
+function findPatient(id){
     return database.patients.find((patient) => patient.id === id);
 }
 
@@ -18,4 +18,10 @@ function updatePatient(patient){
     database.patients[index] = patient;
 }
 
-module.exports = {insertPatient,retrievePatientList,getPatient,updatePatient};
+function retrievePatient(id){
+    const {lastName,firstName,...patient} = findPatient(id);
+    patient.name = lastName + ' ' + firstName;
+    return patient;
+}
+
+module.exports = {insertPatient,retrievePatientList,findPatient,updatePatient,retrievePatient};

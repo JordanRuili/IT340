@@ -11,11 +11,15 @@ function getPatientList(){
 }
 
 function savePatient(id,lastName,firstName){
-    let patient = DAO.getPatient(id);
+    let patient = DAO.findPatient(id);
     patient.lastName = lastName;
     patient.firstName = firstName;
     console.log("patienttttt", patient);
     DAO.updatePatient(patient);
 }
 
-module.exports = {addPatient, getPatientList,savePatient};
+function getPatient(id){
+    return DAO.retrievePatient(id);
+}
+
+module.exports = {addPatient, getPatientList,savePatient,getPatient};
