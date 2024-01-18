@@ -13,5 +13,5 @@ class Patient{
         this.creationDate = new Date
     }
 }
-
+ 
 module.exports = Patient;
