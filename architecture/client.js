@@ -14,8 +14,8 @@ const patientQuery = require('./patientQuery');
 //CQRS
 patientCommand.addPatient('moi','moi');
 
-patientQuery.getPatientList();
+// patientQuery.getPatientList();
 
-patientQuery.getPatient(1);
+// patientQuery.getPatient(1);
 
 patientCommand.savePatient(1,'toi','toi');

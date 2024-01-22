@@ -1,4 +1,4 @@
-const queryDAO = require('./patientDAO')
+const queryDAO = require('./patientQueryDAO')
 
 function getPatientList(){
     return queryDAO.retrievePatientList()
