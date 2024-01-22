@@ -1,5 +1,7 @@
 const database = {
-    patients : []
+    patients : [],
+    patientList : []
 };
+
 
 module.exports = database;

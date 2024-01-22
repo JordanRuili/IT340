@@ -1,9 +1,11 @@
+const queryDAO = require('./patientDAO')
+
 function getPatientList(){
-    return DAO.retrievePatientList()
+    return queryDAO.retrievePatientList()
 }
 
 function getPatient(id){
-    return DAO.retrievePatient(id);
+    return queryDAO.retrievePatient(id);
 }
 
 

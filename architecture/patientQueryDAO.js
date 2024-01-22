@@ -1,5 +1,13 @@
+const database = require('./database')
+
+
+function findPatient(id){
+    return database.patients.find((patient) => patient.id === id);
+}
+
 function retrievePatientList(){
-    return database.patients.map(({creationDate, ...patient}) => ({patient}));
+    //return database.patients.map(({creationDate, ...patient}) => ({patient}));
+    return database.patientList;
 }
 
 function retrievePatient(id){
