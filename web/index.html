@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8">
+  <title>TP GLRT</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+
+  <style>
+    :root {
+      --color-green: green;
+      --color-blue: blue;
+      --color-orange: orange;
+      --padding-small: 1.2rem;
+      --padding-big: 2.5rem;
+      --border: 0.1rem solid;
+      --font-size-big: 1.2rem; 
+      --font-size-medium: 1.1rem;
+      --font-size-small: 1rem;
+      --font-size-max: 4rem; 
+      --font-size-min: 2rem;
+      --space: 5rem;
+      --width-half: 50%;
+      --end : end;
+      --right : right;
+    }
+
+    /* fichier header.css */
+    .header {
+      padding: var(--padding-small);
+      border: var(--border) var(--color-blue);
+      color: var(--color-green);
+      font-size: clamp(var(--font-size-min), var(--font-size-big), var(--font-size-max));
+      height: var(--space); 
+      width: var(--width-half);
+      animation: font-slide 2s linear  infinite; 
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .header {
+        animation: none;
+      }
+    }
+
+
+    /* fichier section.css */
+    .section {
+      padding: var(--padding-big);
+      border: var(--border) var(--color-orange);
+      font-size: var(--font-size-medium);
+    }
+
+    /* fichier footer.css */
+    .footer {
+      padding: var(--padding-small);
+      border: var(--border) var(--color-blue);
+      color: var(--color-green);
+      font-size: var(--font-size-small);
+      text-align: var(--end);
+    }
+  </style>
+
+  <style>
+    @keyframes font-slide {
+      from {
+        text-align: start;
+      }
+
+      50% {
+        text-align: center;
+      }
+
+      to {
+        text-align: end;
+      }
+    }
+  </style>
+
+  <body>
+    <div class="header">Ceci est un header</div>
+    
+    
+    <div class="section">Section 1</div>
+    <div class="section">Section 2</div>
+    
+    <div class="footer">Ceci est un footer
+        <p dir="rtl">This paragraph is in English and correctly goes left to right.</p>
+    </div>
+  </body>
+</html>
